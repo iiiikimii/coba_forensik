@@ -1,0 +1,35 @@
+{
+  "case": "SIM-01",
+  "examiner": "Peneliti Forensik",
+  "collected_at_utc": "2026-11-16T05:55:13+00:00",
+  "evidence_root": "C:\\Users\\user\\Documents\\paket_data_contoh\\data_contoh\\bukti",
+  "files": [
+    {
+      "path": "access.log",
+      "size": 10805,
+      "modified_utc": "2026-11-16T05:45:04+00:00",
+      "md5": "0507ea66115aab63bc96bc01a15508df",
+      "sha1": "f16fe19826d2fe214b0bdcc967842b6f85f142cb",
+      "sha256": "6c1445ee259c792cfc261dedfd7f7d99e001dd05b0c7839b6bae1288371f58bf",
+      "ioc_match": false
+    },
+    {
+      "path": "catatan_akuisisi.txt",
+      "size": 169,
+      "modified_utc": "2026-11-16T05:45:04+00:00",
+      "md5": "8d302933b7e99b74b480732367b65ecc",
+      "sha1": "1489ad7f50834007d6e5fe0e54172b5ca9675724",
+      "sha256": "42d326d9684b2143fed0d3a67bb736a325140dab099b6aa9bdf591a49a893561",
+      "ioc_match": false
+    },
+    {
+      "path": "lampiran_simulasi.txt",
+      "size": 162,
+      "modified_utc": "2026-11-16T05:45:04+00:00",
+      "md5": "abb9ff55ca04d23bcacd2bacc89faf43",
+      "sha1": "864b214469f389f6fbf2b95c46e3442d34fcf993",
+      "sha256": "8b14132601aa8764960ea80eb246e7387c1adbf1e42f026c870e19fda39d3d04",
+      "ioc_match": true
+    }
+  ]
+}

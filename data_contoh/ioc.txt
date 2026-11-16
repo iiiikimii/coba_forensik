@@ -1,0 +1,3 @@
+# Daftar hash IOC (SIMULASI)
+# Hash di bawah mewakili lampiran phishing pada skenario latihan
+8b14132601aa8764960ea80eb246e7387c1adbf1e42f026c870e19fda39d3d04   # lampiran_simulasi.txt

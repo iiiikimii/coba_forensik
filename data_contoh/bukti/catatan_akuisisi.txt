@@ -1,0 +1,3 @@
+Kasus   : SIM-SATSEET-01 (simulasi)
+Sumber  : access.log web server HRMS (fiktif)
+Catatan : seluruh data di folder ini dibuat untuk latihan, bukan data PT Satseet asli.

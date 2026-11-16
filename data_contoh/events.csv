@@ -1,0 +1,9 @@
+timestamp,source,description
+2024-11-06 17:54,email,Local User 2 menerima email lowongan kerja dari pengirim "Maya Putri"
+2024-11-19 22:18,email,Email mencurigakan dari pengirim yang sama masuk ke akun Local User 1
+2024-11-20 13:29,email,Lampiran lamaran diunduh oleh Local User 1
+2024-11-20 13:33,disk,Dokumen riwayat hidup (lampiran) dibuka
+2024-11-20 13:49,disk,Akses file update.exe (diduga backdoor)
+2024-11-20 13:50,disk,Akses file ransom.exe (diduga ransomware)
+2024-11-20 13:59,disk,Beberapa file terenkripsi/terkunci
+2024-11-22 09:00,osint,Kelompok BlackPython Team mengklaim pencurian data di Telegram

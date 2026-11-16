@@ -1,0 +1,3 @@
+[DATA SIMULASI - bukan malware]
+Placeholder untuk "Lamaran kerja maya putri follina.zip".
+Dipakai hanya untuk mendemonstrasikan pencocokan hash IOC pada toolkit.
