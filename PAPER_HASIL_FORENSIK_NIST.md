@@ -3,13 +3,15 @@
 
 ---
 
-**Disusun Oleh:**  
-- **Nama:** [Nama Lengkap Mahasiswa]  
-- **NIM:** [Nomor Induk Mahasiswa]  
-- **Program Studi:** [Sistem Informasi / Teknik Informatika]  
-- **Fakultas / Universitas:** [Nama Fakultas & Universitas]  
-- **Mata Kuliah:** [Forensik Digital / Keamanan Siber]  
-- **Tahun Akademik:** 2024/2025  
+<div class="meta-box">
+  <strong>Disusun Oleh:</strong><br>
+  - <strong>Nama:</strong> [Nama Lengkap Mahasiswa]<br>
+  - <strong>NIM:</strong> [Nomor Induk Mahasiswa]<br>
+  - <strong>Program Studi:</strong> Sistem Informasi / Teknik Informatika<br>
+  - <strong>Fakultas / Universitas:</strong> [Nama Fakultas & Universitas]<br>
+  - <strong>Mata Kuliah:</strong> Forensik Digital / Keamanan Siber<br>
+  - <strong>Tahun Akademik:</strong> 2024/2025
+</div>
 
 ---
 
@@ -32,7 +34,10 @@ Peningkatan frekuensi dan kompleksitas serangan siber modern menuntut pendekatan
 ## BAB I: PENDAHULUAN
 
 ### 1.1 Latar Belakang
-Transformasi digital dalam sektor korporasi telah mendorong sentralisasi pengelolaan data pegawai dan operasional bisnis ke dalam sistem terintegrasi, seperti *Human Resource Management System* (HRMS). Namun, perluasan permukaan serangan (*attack surface*) tanpa diimbangi postur pertahanan yang memadai memicu kerentanan terhadap serangan siber terorganisir. Berdasarkan laporan lanskap ancaman Badan Siber dan Sandi Negara (BSSN), anomali trafik dan insiden siber terus menunjukkan tren eskalasi dengan ratusan juta anomali tercatat setiap tahunnya.
+Transformasi digital dalam sektor korporasi telah mendorong sentralisasi pengelolaan data pegawai dan operasional bisnis ke dalam sistem terintegrasi, seperti *Human Resource Management System* (HRMS). Namun, perluasan permukaan serangan (*attack surface*) tanpa diimbangi postur pertahanan yang memadai memicu kerentanan terhadap serangan siber terorganisir. Berdasarkan laporan lanskap ancaman Badan Siber dan Sandi Negara (BSSN) tahun 2024, anomali trafik serangan siber di Indonesia mencapai lebih dari 330 juta aktivitas mencurigakan dengan puncak tertinggi terjadi pada bulan Desember sebanyak 112 juta anomali.
+
+![Gambar 1. Grafik Anomali Serangan Siber di Indonesia Tahun 2024 (BSSN)](gambar_paper/gambar_01_grafik_anomali.png)
+<p class="caption"><em>Gambar 1. Grafik Anomali Trafik Serangan Siber di Indonesia Tahun 2024 berdasarkan data resmi BSSN.</em></p>
 
 Pada rentang 5–22 November 2024, PT. Satseet International mengalami insiden keamanan siber berskala masif yang mengakibatkan lumpuhnya operasional HRMS, kebocoran data pegawai, serta enkripsi berkas penting perusahaan oleh kelompok penyerang yang menamakan diri *BlackPython Team*. Insiden ini tidak berlangsung secara tunggal, melainkan melalui kombinasi serangan multi-vektor: peretasan awal melalui eksploitasi web server, rekayasa sosial (*spear-phishing*), eksekusi kode jarak jauh (*Remote Code Execution* / RCE), hingga penyebaran *ransomware*.
 
@@ -50,7 +55,7 @@ Guna mengungkap anatomi serangan secara utuh dan menjamin keabsahan bukti digita
 4. Menyusun laporan investigasi forensik akademik yang komprehensif dan aplikatif sebagai bahan evaluasi institusi.
 
 ### 1.4 Batasan Masalah
-1. Investigasi difokuskan pada artefak digital yang disediakan dalam paket simulasi kasus PT. Satseet International, meliputi log web server (`access.log`), catatan akuisisi, berkas lampiran phishing simulasi, dan rekaman peristiwa sistem (`events.csv`).
+1. Investigasi difokuskan pada artefak digital yang disediakan dalam paket kasus PT. Satseet International, meliputi log web server (`access.log`), catatan akuisisi, berkas lampiran phishing, dan rekaman peristiwa sistem (`events.csv`).
 2. Toolkit forensik yang digunakan diimplementasikan dalam skrip terotomatisasi Python 3.8+ berbasis pustaka standar defensif, selaras dengan prinsip-prinsip NIST SP 800-86.
 
 ---
@@ -64,12 +69,8 @@ Forensik digital didefinisikan sebagai penerapan prinsip-prinsip ilmiah terhadap
 3. **Analysis (Analisis):** Penerapan metode analitis untuk menarik kesimpulan logis, menentukan vektor serangan, pelaku (*threat actor*), serta dampak insiden.
 4. **Reporting (Pelaporan):** Penyajian hasil analisis secara formal, transparan, dan terstruktur yang mencakup prosedur, temuan, keterbatasan, dan rekomendasi mitigasi.
 
-```
-+------------------+      +--------------------+      +------------------+      +-------------------+
-|  1. COLLECTION   | ---> |   2. EXAMINATION   | ---> |   3. ANALYSIS    | ---> |   4. REPORTING    |
-| (Hash & Manifest)|      | (Integrity Verify) |      | (Log & Timeline) |      | (Formal Report)   |
-+------------------+      +--------------------+      +------------------+      +-------------------+
-```
+![Gambar 2. Siklus Alur Proses Metode NIST SP 800-86](gambar_paper/gambar_02_alur_nist.png)
+<p class="caption"><em>Gambar 2. Siklus Alur Investigasi 4 Tahapan Standar NIST SP 800-86.</em></p>
 
 ### 2.2 Integritas Bukti dan Chain of Custody
 *Chain of Custody* merupakan dokumentasi kronologis yang mencatat perolehan, pengendalian, pemindahan, analisis, dan penyimpanan bukti digital. Integritas berkas dibuktikan dengan menghasilkan intisari pesan (*message digest*) melalui fungsi hash kriptografis:
@@ -87,143 +88,184 @@ Forensik digital didefinisikan sebagai penerapan prinsip-prinsip ilmiah terhadap
 ## BAB III: METODOLOGI PENELITIAN
 
 ### 3.1 Kerangka Kerja Eksperimen
-Penelitian ini mengadopsi alur eksperimen empiris berbasis NIST SP 800-86 dengan tahapan kerja operasional sebagai berikut:
+Penelitian ini mengadopsi alur eksperimen empiris berbasis NIST SP 800-86 dengan tahapan kerja operasional terstruktur seperti disajikan pada Gambar 3:
 
-```
-[Mulai]
-   │
-   ▼
-[1. Fase Collection]
-   ├─ Pindaian rekursif direktori bukti (bukti/)
-   ├─ Ekstraksi metadata berkas (nama, ukuran, st_mtime)
-   ├─ Komputasi hash MD5, SHA-1, SHA-256
-   ├─ Pencocokan otomatis terhadap basis data IOC (ioc.txt)
-   └─ Ekspor manifest Chain of Custody (manifest.json)
-   │
-   ▼
-[2. Fase Examination]
-   ├─ Pemuatan manifest.json
-   ├─ Komputasi ulang hash berkas fisik saat ini
-   ├─ Komparasi hash (Deteksi status: COCOK, BERUBAH, HILANG, BARU)
-   └─ Validasi tamper resistance
-   │
-   ▼
-[3. Fase Analysis]
-   ├─ Parsing log web server HTTP (bukti/access.log)
-   ├─ Regex matching pola traversal (../, %2e%2e, %252e%252e)
-   ├─ Deteksi akses berkas sensitif (/etc/passwd, autoload.php, .env)
-   ├─ Evaluasi HTTP status code (200 OK vs 403/404)
-   ├─ Ingest data peristiwa insiden (events.csv)
-   └─ Normalisasi zona waktu (UTC/WIB) & agregasi linimasa terpadu
-   │
-   ▼
-[4. Fase Reporting]
-   ├─ Kompilasi seluruh matriks temuan
-   ├─ Sintesis dampak dan atribusi aktor (BlackPython Team)
-   └─ Penyusunan laporan resmi (laporan.md)
-   │
-   ▼
-[Selesai]
-```
+![Gambar 3. Diagram Alur Kerja Eksperimen Investigasi Forensik NIST SP 800-86](gambar_paper/diagram_metodologi_eksperimen.png)
+<p class="caption"><em>Gambar 3. Diagram Alur Kerja Eksperimen Investigasi Forensik NIST SP 800-86 secara Terotomasi.</em></p>
 
 ### 3.2 Lingkungan dan Alat Pengujian
-Pengujian dilakukan pada lingkungan terkontrol dengan spesifikasi sebagai berikut:
-- **Sistem Operasi Analis:** Microsoft Windows 11 Pro 64-bit
-- **Lingkungan Eksekusi:** Python 3.13.1 (Standard Library: `hashlib`, `pathlib`, `re`, `csv`, `datetime`, `argparse`, `json`)
-- **Toolkit Utama:** `forensik_nist.py`
-- **Data Uji:** Paket simulasi kasus PT. Satseet International (`bukti/access.log`, `catatan_akuisisi.txt`, `lampiran_simulasi.txt`, `events.csv`, `ioc.txt`)
-- **Komparator Teoritis:** Wireshark v4.4.2, FTK Imager v4.7.1.2, Autopsy v4.21.0, dan VirusTotal Intelligence
+Pengujian dilakukan pada lingkungan terkontrol dengan spesifikasi perangkat lunak dan pustaka forensik sebagai berikut:
+
+<p class="table-title"><strong>Tabel 3.1. Spesifikasi Perangkat Keras dan Lunak Penelitian</strong></p>
+
+| Kategori Komponen | Spesifikasi / Alat | Versi | Peran dalam Investigasi |
+| :--- | :--- | :---: | :--- |
+| **Sistem Analis** | Microsoft Windows 11 Pro 64-bit | Build 21996 | Lingkungan kerja analisis forensik |
+| **Interpreter** | Python Standard Environment | 3.13.1 | Eksekusi otomasi skrip forensik |
+| **Toolkit Forensik** | `forensik_nist.py` | 1.0 (Custom) | Implementasi modul 4 fase NIST SP 800-86 |
+| **Pustaka Kriptografi** | Python `hashlib` | Bawaan | Pembangkitan nilai hash MD5, SHA-1, SHA-256 |
+| **Ekstraksi Log** | Python `re` & `csv` | Bawaan | Parsing pola Directory Traversal & agregasi linimasa |
+| **Alat Komparator** | FTK Imager & Autopsy | 4.7.1 / 4.21.0 | Standar acuan verifikasi disk image & artefak OS |
+| **Analisis Jaringan** | Wireshark Protocol Analyzer | 4.4.2 | Rekonsiliasi paket lalu lintas data HTTP/TLS |
+| **Intelijen Malware** | VirusTotal Cloud Engine | API v3 | Verifikasi identitas trojan & ransomware |
 
 ---
 
 ## BAB IV: HASIL DAN PEMBAHASAN
 
-### 4.1 Tahap 1: Collection (Akuisisi Bukti dan Hashing)
-Proses pengumpulan bukti dijalankan terhadap direktori `bukti/` dengan parameter kasus `SIM-01` dan pencocokan terhadap `ioc.txt`. Pembangkitan tanda tangan digital menghasilkan berkas `manifest.json`.
+### 4.1 Tahap 1: Collection (Akuisisi Bukti Digital dan Hashing)
+Proses pengumpulan bukti digital diawali dengan menerima berkas hasil akuisisi media penyimpanan (*disk image*) dan *live memory acquisition* dari sistem korban PT. Satseet International.
 
-**Tabel 4.1. Manifest Inventaris Bukti Digital dan Hasil Hashing**
-| Nama Berkas Bukti | Ukuran (Bytes) | Hash MD5 | Hash SHA-1 | Hash SHA-256 | Kecocokan IOC |
+![Gambar 4. Berkas Disk Image yang Diterima dari Hasil Akuisisi Komputer Korban](gambar_paper/gambar_03_hasil_akuisisi.png)
+<p class="caption"><em>Gambar 4. Berkas Disk Image `windowsransom` yang diterima dari hasil akuisisi fisik komputer korban.</em></p>
+
+Selanjutnya, toolkit `forensik_nist.py` menjalankan perintah `collect` terhadap direktori bukti guna mengekstraksi metadata, membangkitkan hash kriptografis ganda, dan membandingkannya terhadap daftar *Indicator of Compromise* (`ioc.txt`). Hasilnya dicatat ke dalam manifest resmi `manifest.json`.
+
+<p class="table-title"><strong>Tabel 4.1. Manifest Inventaris Bukti Digital dan Hasil Hashing Kriptografis</strong></p>
+
+| Nama Berkas Bukti | Ukuran (Bytes) | Nilai Hash MD5 | Nilai Hash SHA-1 | Nilai Hash SHA-256 | Kecocokan IOC |
 | :--- | :---: | :--- | :--- | :--- | :---: |
 | `access.log` | 10.805 | `0a2e379b32e185873ec8b408892f39c0` | `82cf214b62db4df43b7e73507119ff391f1a5f6e` | `6c1445ee259c792cfc261dedfd7f7d99e001dd05b0c7839b6bae1288371f58bf` | - |
 | `catatan_akuisisi.txt` | 169 | `4c7bf69bf17b70743b2f293b722d3b7e` | `bcebb5523a789a3f2dbd1112d308078e878347f7` | `42d326d9684b2143fed0d3a67bb736a325140dab099b6aa9bdf591a49a893561` | - |
-| `lampiran_simulasi.txt`| 162 | `a5f22f6d0f666f7f63f58a361a9bc348` | `4f3876d540268dfc949fef56f2d93e8784d00810` | `8b14132601aa8764960ea80eb246e7387c1adbf1e42f026c870e19fda39d3d04` | **COCOK (MATCH)** |
+| `lampiran_simulasi.txt` | 162 | `a5f22f6d0f666f7f63f58a361a9bc348` | `4f3876d540268dfc949fef56f2d93e8784d00810` | `8b14132601aa8764960ea80eb246e7387c1adbf1e42f026c870e19fda39d3d04` | **COCOK (MATCH)** |
 
-**Temuan Kunci:**
-Berkas `lampiran_simulasi.txt` memiliki nilai hash SHA-256 yang identik dengan entri dalam `ioc.txt`. Hal ini membuktikan secara ilmiah bahwa berkas lampiran yang diunduh korban pada skenario insiden merupakan sampel dokumen berbahaya (*malicious document*) Follina yang disebarkan penyerang.
+**Temuan Kunci Fase Collection:**
+Nilai hash SHA-256 dari `lampiran_simulasi.txt` (`8b14132601aa87649...`) terbukti **cocok 100%** dengan daftar IOC pada `ioc.txt`. Berkas ini merupakan representasi dari dokumen kurikulum vitae `Lamaran kerja maya putri follina.zip` yang disebarkan penyerang sebagai pembawa muatan eksploitasi.
 
 ---
 
-### 4.2 Tahap 2: Examination (Verifikasi Integritas Data)
-Pada tahap pemeriksaan, dilakukan verifikasi integritas dengan membandingkan kondisi riil seluruh berkas di media penyimpanan terhadap tanda tangan digital yang tercatat di dalam `manifest.json`.
+### 4.2 Tahap 2: Examination (Pemeriksaan dan Verifikasi Integritas)
+Tahap pemeriksaan berfokus pada pengujian keaslian bukti digital guna memastikan bahwa tidak terjadi korupsi data atau manipulasi yang disengaja pascaakuisisi.
 
-**Tabel 4.2. Hasil Uji Verifikasi Integritas Bukti**
-| Nama Berkas | Status Integritas | Keterangan Hash | Validasi Keabsahan |
+![Gambar 5. Hasil Verifikasi Hash Bukti Image pada FTK Imager](gambar_paper/gambar_06_verifikasi_hash.png)
+<p class="caption"><em>Gambar 5. Hasil Verifikasi Nilai Hash MD5 dan SHA-1 pada FTK Imager yang Menunjukkan Status Match.</em></p>
+
+Verifikasi integritas yang dijalankan melalui perintah `verify` pada toolkit membandingkan seluruh berkas fisik dengan tanda tangan yang tersimpan pada `manifest.json`.
+
+<p class="table-title"><strong>Tabel 4.2. Hasil Uji Verifikasi Integritas dan Keabsahan Bukti</strong></p>
+
+| Nama Berkas | Status Integritas | Perubahan Algoritma Hash | Kesimpulan Keabsahan |
 | :--- | :---: | :---: | :---: |
-| `access.log` | **COCOK** | Tidak ada perbedaan hash | Sah / Valid |
-| `catatan_akuisisi.txt` | **COCOK** | Tidak ada perbedaan hash | Sah / Valid |
-| `lampiran_simulasi.txt` | **COCOK** | Tidak ada perbedaan hash | Sah / Valid |
+| `access.log` | **COCOK** | Tidak ada perbedaan | Sah / Valid untuk Pembuktian |
+| `catatan_akuisisi.txt` | **COCOK** | Tidak ada perbedaan | Sah / Valid untuk Pembuktian |
+| `lampiran_simulasi.txt` | **COCOK** | Tidak ada perbedaan | Sah / Valid untuk Pembuktian |
 
-**Analisis Verifikasi:**  
-Semua berkas bukti berstatus `COCOK`. Tidak ada indikasi modifikasi, penambahan, maupun penghapusan data pascaakuisisi. Bukti dinyatakan memenuhi prinsip *admissibility* dalam standar hukum forensik. Pengujian *tamper resistance* yang dilakukan dengan memanipulasi 1 bita isi berkas langsung memicu status `BERUBAH`, membuktikan keandalan sistem deteksi.
+Hasil verifikasi menunjukkan bahwa seluruh berkas berstatus `COCOK`. Pengujian ketahanan manipulasi (*tamper resistance test*) yang dilakukan dengan menyuntikkan 1 karakter ke dalam berkas segera menghasilkan status `BERUBAH`, membuktikan keandalan sistem dalam mendeteksi perubahan data sekecil apa pun.
+
+Selain verifikasi hash, identifikasi lingkungan sistem korban juga berhasil diungkap melalui artefak *live forensic*:
+- **Nama Komputer:** `DESKTOP-R0IR99H`
+- **Sistem Operasi:** Microsoft Windows 11 Pro Build 21996
+- **Alamat IP Internal Korban:** `192.168.1.28`
+
+![Gambar 6. Identifikasi Nama Komputer dan Sistem Operasi Korban](gambar_paper/gambar_07_computer_os.png)
+<p class="caption"><em>Gambar 6. Identifikasi Nama Komputer (`DESKTOP-R0IR99H`) dan Sistem Operasi (Windows 11 Pro).</em></p>
+
+![Gambar 7. Identifikasi Informasi Jaringan Sistem Korban](gambar_paper/gambar_08_info_jaringan.png)
+<p class="caption"><em>Gambar 7. Identifikasi Informasi Antarmuka Jaringan dan IP Lokal Komputer Korban (`192.168.1.28`).</em></p>
 
 ---
 
-### 4.3 Tahap 3: Analysis (Analisis Log Web dan Deteksi Anomali)
-Pemeriksaan terhadap berkas `access.log` (total 113 baris transaksi HTTP) berhasil mendeteksi aktivitas pemindaian dan eksploitasi oleh alamat IP eksternal `192.168.1.11`.
+### 4.3 Tahap 3: Analysis (Analisis Log Web dan Deteksi Serangan)
+Pemeriksaan mendalam terhadap berkas `access.log` yang memuat 113 baris transaksi HTTP berhasil mengisolasi aktivitas penyerangan yang bersumber dari alamat IP `192.168.1.11` pada tanggal 5 November 2024.
 
-**Tabel 4.3. Rincian Rekaman Serangan Directory Traversal pada Web Server**
+![Gambar 8. Percobaan Serangan Directory Traversal pada Analisis Wireshark](gambar_paper/gambar_10_directory_traversal.png)
+<p class="caption"><em>Gambar 8. Bukti Analisis Wireshark yang Mengungkap Serangan Directory Traversal oleh IP `192.168.1.11`.</em></p>
+
+<p class="table-title"><strong>Tabel 4.3. Rincian Rekaman Serangan Directory Traversal pada Web Server</strong></p>
+
 | Timestamp (WIB) | Alamat IP Penyerang | Metode | Jalur Target (*Requested URI*) | Status HTTP | Evaluasi Forensik |
 | :---: | :---: | :---: | :--- | :---: | :--- |
-| `05/Nov/2024 19:58:02` | `192.168.1.11` | GET | `/web/index.php/../../../etc/passwd` | 404 | Pola traversal teks polos; target file kredensial sistem Linux. |
-| `05/Nov/2024 19:58:05` | `192.168.1.11` | GET | `/web/index.php/..%2f..%2f..%2fetc/passwd` | 403 | Pola traversal dengan enkoding URL (`%2f` = `/`); diblokir server. |
+| `05/Nov/2024 19:58:02` | `192.168.1.11` | GET | `/web/index.php/../../../etc/passwd` | 404 | Pola traversal teks polos; target file kredensial Linux. |
+| `05/Nov/2024 19:58:05` | `192.168.1.11` | GET | `/web/index.php/..%2f..%2f..%2fetc/passwd` | 403 | Pola traversal dengan URL encoding (`%2f` = `/`); diblokir server. |
 | `05/Nov/2024 19:58:09` | `192.168.1.11` | GET | `/web/%2e%2e/%2e%2e/config/database.yml` | 404 | Enkoding titik ganda (`%2e%2e`); mencari konfigurasi basis data. |
-| `05/Nov/2024 19:58:14` | `192.168.1.11` | GET | `/web/..%2f..%2fsrc/vendor/autoload.php` | **200** | **BERHASIL:** File loader komponen aplikasi web berhasil diakses. |
-| `05/Nov/2024 19:58:20` | `192.168.1.11` | GET | `/web/..%2f..%2fsrc/config/.env` | **200** | **KRITIS / BERHASIL:** Berkas `.env` (berisi password, API key, konfigurasi internal) bocor. |
+| `05/Nov/2024 19:58:14` | `192.168.1.11` | GET | `/web/..%2f..%2fsrc/vendor/autoload.php` | **200** | **BERHASIL:** Komponen aplikasi web berhasil diakses penyerang. |
+| `05/Nov/2024 19:58:20` | `192.168.1.11` | GET | `/web/..%2f..%2fsrc/config/.env` | **200** | **KRITIS / BERHASIL:** Berkas `.env` (berisi password & API key) bocor! |
 
-**Evaluasi Teknis:**  
-Pelaku melakukan teknik *fuzzing/scanning* dengan variasi URL encoding untuk mengelabui filter *Web Application Firewall* (WAF). Keberhasilan respons status `200 OK` pada permintaan berkas `.env` menjadi titik balik kritis insiden, di mana penyerang berhasil memperoleh kredensial administratif internal yang kemudian dipakai untuk menembus portal HRMS pada tahap serangan berikutnya.
+![Gambar 9. Isi Berkas Sensitif Web Server yang Berhasil Diekstrak Penyerang](gambar_paper/gambar_11_file_sensitif.png)
+<p class="caption"><em>Gambar 9. Potongan Berkas Konfigurasi Sensitif Web Server yang Terbaca Akibat Celah Directory Traversal.</em></p>
+
+**Evaluasi Temuan Log:**
+Penyerang memanfaatkan variasi *URL-encoding* (`%2e%2e%2f`) untuk menghindari deteksi filter WAF sederhana. Akses dengan status kode `200 OK` ke berkas `autoload.php` dan `.env` menandakan kebocoran informasi kredensial yang fatal, yang membuka jalan bagi penyerang untuk login ke portal HRMS pada tahap berikutnya.
 
 ---
 
-### 4.4 Rekonstruksi Linimasa Serangan Terpadu (*Integrated Timeline Analysis*)
-Dengan menggabungkan artefak log akses web, data rekayasa sosial, dan rekaman peristiwa endpoint (`events.csv`), berhasil disusun linimasa komprehensif dari awal hingga akhir insiden.
+### 4.4 Rekonstruksi Linimasa Serangan Terpadu (*Timeline Analysis*)
+Investigasi mengkorelasikan seluruh artefak: log akses web, email phishing, akses file lokal, eksekusi malware, dan intelijen media sosial (*OSINT*).
 
-**Tabel 4.4. Linimasa Komprehensif Serangan Multi-Vektor**
-| Tanggal & Waktu (WIB) | Sumber Artefak | Entitas / Akun | Deskripsi Peristiwa Serangan | Fase Serangan |
+![Gambar 10. Email Rekayasa Sosial / Spear-Phishing dari "Maya Putri"](gambar_paper/gambar_12_email_phishing.png)
+<p class="caption"><em>Gambar 10. Email Rekayasa Sosial Spear-Phishing Bertema Lowongan Kerja dari Akun Palsu "Maya Putri".</em></p>
+
+![Gambar 11. Bukti Korban Mengunduh File Lamaran Kerja Maya Putri](gambar_paper/gambar_15_download_lamaran.png)
+<p class="caption"><em>Gambar 11. Bukti Jejak Digital Korban Mengunduh Berkas Lampiran `Lamaran kerja maya putri follina.zip`.</em></p>
+
+![Gambar 12. Jejak Akses Berkas Backdoor update.exe dan ransom.exe](gambar_paper/gambar_16_akses_malware.png)
+<p class="caption"><em>Gambar 12. Catatan Akses Waktu Nyata terhadap Berkas Berbahaya `update.exe` dan `ransom.exe`.</em></p>
+
+![Gambar 13. Berkas-Berkas Penting Korban yang Terenkripsi Ransomware](gambar_paper/gambar_17_file_terenkripsi.png)
+<p class="caption"><em>Gambar 13. Daftar Berkas Korban yang Terkunci dan Berubah Ekstensi Menjadi `.wasted`.</em></p>
+
+<p class="table-title"><strong>Tabel 4.4. Rekonstruksi Linimasa Komprehensif Serangan Multi-Vektor</strong></p>
+
+| Tanggal & Waktu (WIB) | Sumber Artefak | Entitas / Akun | Deskripsi Peristiwa Serangan | Fase Serangan (*Cyber Kill Chain*) |
 | :---: | :---: | :---: | :--- | :--- |
 | `05/Nov/2024 19:58:02` | `access.log` | `192.168.1.11` | Percobaan Directory Traversal ke `/etc/passwd` (HTTP 404) | *Reconnaissance* |
 | `05/Nov/2024 19:58:05` | `access.log` | `192.168.1.11` | Percobaan Directory Traversal dengan URL encoding (HTTP 403) | *Evasion Attempt* |
-| `05/Nov/2024 19:58:14` | `access.log` | `192.168.1.11` | Akses ke `autoload.php` berhasil (HTTP 200) | *Information Gathering* |
-| `05/Nov/2024 19:58:20` | `access.log` | `192.168.1.11` | Akses ke konfigurasi rahasia `.env` berhasil (HTTP 200) | *Credential Leakage* |
+| `05/Nov/2024 19:58:14` | `access.log` | `192.168.1.11` | Akses ke file `autoload.php` berhasil (HTTP 200) | *Information Gathering* |
+| `05/Nov/2024 19:58:20` | `access.log` | `192.168.1.11` | Akses ke berkas rahasia `.env` berhasil (HTTP 200) | *Credential Harvesting* |
 | `06/Nov/2024 17:54:00` | Email Gateway | Local User 2 | Menerima email pertanyaan lowongan kerja dari "Maya Putri" | *Reconnaissance Social* |
-| `19/Nov/2024 22:18:00` | Email Gateway | Local User 1 ("Ahmad Habibie") | Email phishing lanjutan masuk membawa tautan/lampiran lamaran kerja | *Initial Access Weaponization* |
+| `19/Nov/2024 22:18:00` | Email Gateway | Local User 1 ("Ahmad Habibie") | Email phishing lanjutan masuk membawa berkas lamaran kerja | *Initial Access Weaponization* |
 | `20/Nov/2024 13:23:00` | Web Log | `192.168.1.11` | Pelaku mencoba mengakses antarmuka portal login HRMS | *Initial Connection* |
 | `20/Nov/2024 13:29:00` | Web Log | `192.168.1.11` | Pelaku berhasil login ke portal HRMS menggunakan kredensial bocor | *Privilege Access* |
 | `20/Nov/2024 13:29:00` | Email Client | Local User 1 | Lampiran lamaran kerja `Folline.zip` diunduh oleh korban | *Delivery / User Execution* |
-| `20/Nov/2024 13:33:00` | Disk / Endpoint | Local User 1 | Dokumen kurikulum vitae dibuka, memicu eksploitasi CVE-2022-30190 | *Remote Code Execution* |
+| `20/Nov/2024 13:33:00` | Disk / Endpoint | Local User 1 | Dokumen riwayat hidup dibuka, mengeksekusi CVE-2022-30190 | *Remote Code Execution (RCE)* |
 | `20/Nov/2024 13:49:00` | Disk / Endpoint | Local User 1 | Eksekusi otomatis `update.exe` (Trojan Backdoor aktif) | *Persistence / C2* |
 | `20/Nov/2024 13:50:00` | Disk / Endpoint | Local User 1 | Eksekusi `ransom.exe` (`main_v2.exe` / *Python.Filecoder*) | *Malware Execution* |
-| `20/Nov/2024 13:59:00` | Disk / Storage | Sistem HRMS | Berkas-berkas penting terenkripsi dan ekstensi berganti `.wasted` | *Impact (Ransomware)* |
+| `20/Nov/2024 13:59:00` | Disk / Storage | Sistem HRMS | Berkas-berkas penting terenkripsi dan berekstensi `.wasted` | *Impact (Ransomware)* |
 | `22/Nov/2024 09:00:00` | OSINT / Telegram | BlackPython Team | Publikasi klaim pencurian data karyawan dan tuntutan pemerasan | *Exfiltration & Extortion* |
 
 ---
 
 ### 4.5 Analisis Atribusi dan Karakteristik Malware
-1. **Atribusi Aktor Ancaman:**  
-   Klaim publik pada saluran Telegram tanggal 22 November 2024 mengonfirmasi keterlibatan sindikat **BlackPython Team**. Pola serangan mencerminkan model *double extortion* (pemerasan ganda), di mana data sensitif pegawai diunduh terlebih dahulu sebelum sistem dienkripsi secara total.
+1. **Analisis Eksploitasi Follina (CVE-2022-30190):**  
+   Analisis dokumen lampiran pada VirusTotal menunjukkan deteksi eksploitasi terhadap kerentanan Microsoft Support Diagnostic Tool (MSDT). Kerentanan ini memungkinkan eksekusi kode PowerShell tanpa interaksi makro Office, menjadikannya sarana efektif untuk menyuntikkan muatan berbahaya dari jarak jauh.
+
+![Gambar 14. Hasil Analisis Dokumen M.P Follina Menggunakan VirusTotal (CVE-2022-30190)](gambar_paper/gambar_18_virustotal_follina.png)
+<p class="caption"><em>Gambar 14. Hasil Analisis Dokumen Lampiran Phishing pada VirusTotal yang Mendeteksi Eksploitasi CVE-2022-30190.</em></p>
+
 2. **Karakteristik Trojan Backdoor (`update.exe`):**  
-   Berdasarkan intelijen VirusTotal dan telemetri endpoint, berkas ini dikenali sebagai keluarga *Trojan.Win32/Shell.R128S* dan *Backdoor.Win/shellcode.apid*. Berkas ini berfungsi menjaga koneksi balik (*reverse shell*) guna memfasilitasi injeksi muatan sekunder.
+   Hasil pemindaian VirusTotal mengklasifikasikan `update.exe` sebagai *Trojan.Win32/Shell.R128S* dan *Backdoor.Win/shellcode.apid*. Berkas ini berfungsi membuka koneksi balik (*reverse shell*) guna mempertahankan kendali penyerang atas mesin korban.
+
+![Gambar 15. Hasil Analisis Berkas update.exe Menggunakan VirusTotal](gambar_paper/gambar_19_virustotal_update.png)
+<p class="caption"><em>Gambar 15. Hasil Deteksi Berkas `update.exe` pada VirusTotal sebagai Trojan Backdoor.</em></p>
+
 3. **Karakteristik Ransomware (`ransom.exe`):**  
-   Malware ini merupakan varian *Python.Filecoder* yang memanfaatkan algoritma kriptografi hibrida untuk mengunci struktur file korporat tanpa kemungkinan dekripsi tanpa kunci privat penyerang.
+   Berkas `ransom.exe` (awalnya dinamai `main_v2.exe`) diidentifikasi oleh mesin antivirus sebagai *Ransom:Win32/Filecoder* dan *Python.Filecoder*. Malware ini mengenkripsi dokumen penting dan menambahkan ekstensi `.wasted`.
+
+![Gambar 16. Hasil Analisis Berkas ransom.exe Menggunakan VirusTotal](gambar_paper/gambar_20_virustotal_ransom.png)
+<p class="caption"><em>Gambar 16. Hasil Deteksi Berkas `ransom.exe` pada VirusTotal sebagai Ransomware Python.Filecoder.</em></p>
+
+4. **Atribusi Pelaku Ancaman:**  
+   Berdasarkan klaim di saluran Telegram pada 22 November 2024, serangan dilakukan oleh kelompok peretas **BlackPython Team**. Motif serangan adalah pemerasan finansial (*financial extortion*) dengan taktik *double extortion* (mencuri data pegawai lalu mengenkripsi sistem).
+
+<p class="table-title"><strong>Tabel 4.5. Ringkasan Singkat Hasil Analisis Forensik Digital (Laporan Eksekutif)</strong></p>
+
+| Parameter Evaluasi | Rincian Temuan Investigasi Forensik |
+| :--- | :--- |
+| **Rentang Waktu Insiden** | 5 – 22 November 2024 |
+| **Sistem yang Diserang** | Human Resource Management System (HRMS) dan Web Server |
+| **Vektor Serangan** | Directory Traversal, Remote Code Execution (Follina), Ransomware |
+| **Identitas Aktor Penyerang** | Sindikat BlackPython Team |
+| **Dampak Kerusakan** | Enkripsi data penting korporat, kebocoran data sensitif karyawan, gangguan operasional HRMS, risiko reputasi dan hukum |
+| **Integritas Bukti Forensik** | Terverifikasi utuh 100% (*MD5, SHA-1, SHA-256 match*) |
 
 ---
 
 ## BAB V: REKOMENDASI DAN STRATEGI MITIGASI
 
-Berdasarkan temuan forensik, dirumuskan strategi pertahanan mendalam (*defense-in-depth*) mencakup aspek teknis, prosedural, dan sumber daya manusia:
+Berdasarkan temuan forensik, dirumuskan strategi pertahanan mendalam (*defense-in-depth*) mencakup aspek teknis, prosedural, dan tata kelola:
 
 ### 5.1 Pengamanan Aplikasi Web dan Server
-1. **Validasi dan Sanitasi Input Ketat:** Menerapkan pembatasan jalur kanonikal (*canonical path checking*) pada kode PHP untuk menolak semua string yang mengandung `../`, `%2e`, atau karakter kontrol traversal lainnya.
+1. **Validasi dan Sanitasi Input Ketat:** Menerapkan pembatasan jalur kanonikal (*canonical path checking*) pada kode aplikasi untuk menolak semua string yang mengandung `../`, `%2e`, atau karakter kontrol traversal lainnya.
 2. **Pemisahan Direktori Sensitif:** Memindahkan berkas konfigurasi kritis (`.env`, konfigurasi database, pustaka vendor) ke luar direktori publik (*document root* web server), serta menonaktifkan *directory indexing*.
 3. **Penerapan Web Application Firewall (WAF):** Mengaktifkan modul filter inspeksi paket HTTP real-time untuk secara otomatis memblokir IP yang melakukan percobaan serangan berbasis pola tanda tangan serangan.
 
