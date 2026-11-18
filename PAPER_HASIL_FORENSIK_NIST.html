@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Paper Forensik NIST - PT Satseet International</title>
+<style>
+  @page {
+    size: A4;
+    margin: 30mm 25mm 25mm 30mm;
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Times New Roman', serif;
+      font-size: 10pt;
+    }
+  }
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 12pt;
+    line-height: 1.45;
+    color: #111;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .paper-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 16pt;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #1a252f;
+  }
+  p strong:first-child {
+    color: #2c3e50;
+  }
+  h2 {
+    font-size: 13.5pt;
+    font-weight: bold;
+    color: #2c3e50;
+    border-bottom: 1.5px solid #bdc3c7;
+    padding-bottom: 4px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    page-break-after: avoid;
+  }
+  p {
+    text-align: justify;
+    text-justify: inter-word;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  ul, ol {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    padding-left: 28px;
+    text-align: justify;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 14px 0;
+    font-size: 9.5pt;
+    line-height: 1.25;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #bdc3c7;
+    padding: 7px 10px;
+  }
+  th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+  }
+  tr:nth-child(even) td {
+    background-color: #f8f9fa;
+  }
+  pre {
+    background-color: #f4f6f7;
+    border: 1px solid #d5dbdb;
+    border-left: 4px solid #2980b9;
+    padding: 10px 14px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 9pt;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    line-height: 1.3;
+  }
+  code {
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 9.5pt;
+    background-color: #eaeded;
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #bdc3c7;
+    margin: 18px 0;
+  }
+  .meta-box {
+    background: #fdfefe;
+    border: 1px solid #d5dbdb;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 12px 0 20px 0;
+    font-size: 11pt;
+  }
+  @media print {
+    body {
+      padding: 0;
+    }
+    .paper-container {
+      max-width: 100%;
+      padding: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="paper-container">
+<h1>INVESTIGASI FORENSIK DIGITAL SERANGAN SIBER MULTI-VEKTOR MENGGUNAKAN METODOLOGI NIST SP 800-86</h1>
+<p><strong>Studi Kasus: Eksploitasi Web Server HRMS, Spear-Phishing Follina (CVE-2022-30190), dan Ransomware pada PT. Satseet International</strong></p>
+<hr />
+<p><strong>Disusun Oleh:</strong><br />
+- <strong>Nama:</strong> [Nama Lengkap Mahasiswa]<br />
+- <strong>NIM:</strong> [Nomor Induk Mahasiswa]<br />
+- <strong>Program Studi:</strong> [Sistem Informasi / Teknik Informatika]<br />
+- <strong>Fakultas / Universitas:</strong> [Nama Fakultas &amp; Universitas]<br />
+- <strong>Mata Kuliah:</strong> [Forensik Digital / Keamanan Siber]<br />
+- <strong>Tahun Akademik:</strong> 2024/2025  </p>
+<hr />
+<h2>ABSTRAK</h2>
+<p>Peningkatan frekuensi dan kompleksitas serangan siber modern menuntut pendekatan investigasi insiden yang terstruktur, akuntabel, dan dapat dipertanggungjawabkan secara hukum. Penelitian ini menyajikan investigasi forensik digital pascainsiden serangan multi-vektor terhadap sistem <em>Human Resource Management System</em> (HRMS) dan web server PT. Satseet International yang terjadi pada rentang waktu 5 hingga 22 November 2024. Metodologi yang diterapkan mengacu pada standar <em>National Institute of Standards and Technology Special Publication 800-86</em> (NIST SP 800-86) yang mencakup empat fase utama: <em>Collection</em>, <em>Examination</em>, <em>Analysis</em>, dan <em>Reporting</em>. Melalui implementasi toolkit forensik terotomatisasi berbasis Python, dilakukan proses akuisisi bukti digital, pembangkitan nilai hash kriptografis (<em>Chain of Custody</em>), analisis 113 baris log akses HTTP, pencocokan <em>Indicator of Compromise</em> (IOC), serta rekonstruksi linimasa (<em>timeline analysis</em>). Hasil investigasi mengungkap bahwa aktor ancaman <em>BlackPython Team</em> memulai serangan melalui <em>Directory Traversal</em> pada web server untuk mengekstraksi berkas konfigurasi sensitif (<code>.env</code> dan <code>autoload.php</code>), dilanjutkan dengan operasi <em>spear-phishing</em> bertema rekrutmen yang memanfaatkan kerentanan <em>Remote Code Execution</em> Follina (CVE-2022-30190). Rangkaian serangan berujung pada penyusupan <em>trojan backdoor</em> (<code>update.exe</code>) dan enkripsi berkas oleh <em>ransomware</em> (<code>ransom.exe</code>). Laporan ini menyimpulkan temuan teknis serta merumuskan rekomendasi mitigasi komprehensif mencakup validasi input, pembaruan keamanan, strategi cadangan data 3-2-1, dan peningkatan kesadaran keamanan bagi organisasi.</p>
+<p><strong>Kata Kunci:</strong> <em>Forensik Digital, NIST SP 800-86, Directory Traversal, Follina (CVE-2022-30190), Ransomware, Chain of Custody.</em></p>
+<hr />
+<h2>ABSTRACT</h2>
+<p><em>The increasing frequency and sophistication of cyberattacks necessitate a structured, accountable, and legally admissible incident investigation approach. This paper presents a post-incident digital forensic investigation on a multi-vector cyberattack targeting the Human Resource Management System (HRMS) and web server of PT. Satseet International between November 5 and November 22, 2024. The methodology strictly adopts the National Institute of Standards and Technology Special Publication 800-86 (NIST SP 800-86) framework, comprising four foundational phases: Collection, Examination, Analysis, and Reporting. Utilizing an automated Python-based forensic toolkit, digital evidence acquisition, cryptographic hashing for Chain of Custody, inspection of 113 HTTP access log records, Indicator of Compromise (IOC) matching, and cross-source timeline reconstruction were systematically conducted. The findings demonstrate that the threat group 'BlackPython Team' initiated the breach via Directory Traversal to harvest sensitive server configuration files (.env and autoload.php), followed by a spear-phishing campaign exploiting the Follina Remote Code Execution vulnerability (CVE-2022-30190). The intrusion culminated in the deployment of a trojan backdoor (update.exe) and critical data encryption by ransomware (ransom.exe). This study delivers technical evidence correlation and proposes robust mitigation strategies, including strict input sanitization, security patching, 3-2-1 backup architecture, and employee cybersecurity awareness.</em></p>
+<p><strong>Keywords:</strong> <em>Digital Forensics, NIST SP 800-86, Directory Traversal, Follina (CVE-2022-30190), Ransomware, Incident Response.</em></p>
+<hr />
+<h2>BAB I: PENDAHULUAN</h2>
+<h3>1.1 Latar Belakang</h3>
+<p>Transformasi digital dalam sektor korporasi telah mendorong sentralisasi pengelolaan data pegawai dan operasional bisnis ke dalam sistem terintegrasi, seperti <em>Human Resource Management System</em> (HRMS). Namun, perluasan permukaan serangan (<em>attack surface</em>) tanpa diimbangi postur pertahanan yang memadai memicu kerentanan terhadap serangan siber terorganisir. Berdasarkan laporan lanskap ancaman Badan Siber dan Sandi Negara (BSSN), anomali trafik dan insiden siber terus menunjukkan tren eskalasi dengan ratusan juta anomali tercatat setiap tahunnya.</p>
+<p>Pada rentang 5–22 November 2024, PT. Satseet International mengalami insiden keamanan siber berskala masif yang mengakibatkan lumpuhnya operasional HRMS, kebocoran data pegawai, serta enkripsi berkas penting perusahaan oleh kelompok penyerang yang menamakan diri <em>BlackPython Team</em>. Insiden ini tidak berlangsung secara tunggal, melainkan melalui kombinasi serangan multi-vektor: peretasan awal melalui eksploitasi web server, rekayasa sosial (<em>spear-phishing</em>), eksekusi kode jarak jauh (<em>Remote Code Execution</em> / RCE), hingga penyebaran <em>ransomware</em>.</p>
+<p>Guna mengungkap anatomi serangan secara utuh dan menjamin keabsahan bukti digital di ranah investigasi maupun hukum, diperlukan metodologi forensik yang terstandarisasi. Standar NIST SP 800-86 dipilih karena menyediakan kerangka kerja investigasi sistematis yang menjamin keutuhan (<em>integrity</em>), keterulangan (<em>repeatability</em>), dan keterlacakan (<em>chain of custody</em>) dari seluruh artefak digital.</p>
+<h3>1.2 Rumusan Masalah</h3>
+<ol>
+<li>Bagaimana mengidentifikasi, mengamankan, dan memverifikasi integritas bukti digital yang diperoleh pascaserangan pada sistem PT. Satseet International?</li>
+<li>Bagaimana pola dan teknik serangan multi-vektor (Directory Traversal, Follina CVE-2022-30190, dan Ransomware) dapat direkonstruksi ke dalam linimasa kronologis yang valid?</li>
+<li>Apa langkah-langkah mitigasi dan tata kelola keamanan yang perlu diterapkan untuk mencegah insiden berulang?</li>
+</ol>
+<h3>1.3 Tujuan Penelitian</h3>
+<ol>
+<li>Menerapkan metodologi NIST SP 800-86 (<em>Collection, Examination, Analysis, Reporting</em>) dalam menginvestigasi insiden keamanan siber.</li>
+<li>Membuktikan integritas bukti digital melalui kalkulasi hash kriptografis ganda (MD5, SHA-1, SHA-256).</li>
+<li>Melakukan deteksi anomali pada log web server serta mencocokkan <em>Indicator of Compromise</em> (IOC).</li>
+<li>Menyusun laporan investigasi forensik akademik yang komprehensif dan aplikatif sebagai bahan evaluasi institusi.</li>
+</ol>
+<h3>1.4 Batasan Masalah</h3>
+<ol>
+<li>Investigasi difokuskan pada artefak digital yang disediakan dalam paket simulasi kasus PT. Satseet International, meliputi log web server (<code>access.log</code>), catatan akuisisi, berkas lampiran phishing simulasi, dan rekaman peristiwa sistem (<code>events.csv</code>).</li>
+<li>Toolkit forensik yang digunakan diimplementasikan dalam skrip terotomatisasi Python 3.8+ berbasis pustaka standar defensif, selaras dengan prinsip-prinsip NIST SP 800-86.</li>
+</ol>
+<hr />
+<h2>BAB II: LANDASAN TEORI</h2>
+<h3>2.1 Forensik Digital dan Standar NIST SP 800-86</h3>
+<p>Forensik digital didefinisikan sebagai penerapan prinsip-prinsip ilmiah terhadap penemuan, validasi, identifikasi, analisis, dan interpretasi bukti digital yang berasal dari media digital untuk memfasilitasi rekonstruksi peristiwa. National Institute of Standards and Technology menerbitkan panduan <strong>NIST SP 800-86</strong> (<em>Guide to Integrating Forensic Techniques into Incident Response</em>) yang menetapkan empat fase dasar:
+1. <strong>Collection (Pengumpulan):</strong> Proses identifikasi, pelabelan, pencatatan, dan pengamanan sumber bukti fisik maupun digital dengan menjaga <em>Chain of Custody</em>.
+2. <strong>Examination (Pemeriksaan):</strong> Pemrosesan bukti mentah secara forensik menggunakan teknik ekstraksi artefak dan verifikasi keaslian melalui algoritma <em>cryptographic hashing</em>.
+3. <strong>Analysis (Analisis):</strong> Penerapan metode analitis untuk menarik kesimpulan logis, menentukan vektor serangan, pelaku (<em>threat actor</em>), serta dampak insiden.
+4. <strong>Reporting (Pelaporan):</strong> Penyajian hasil analisis secara formal, transparan, dan terstruktur yang mencakup prosedur, temuan, keterbatasan, dan rekomendasi mitigasi.</p>
+<pre><code>+------------------+      +--------------------+      +------------------+      +-------------------+
+|  1. COLLECTION   | ---&gt; |   2. EXAMINATION   | ---&gt; |   3. ANALYSIS    | ---&gt; |   4. REPORTING    |
+| (Hash &amp; Manifest)|      | (Integrity Verify) |      | (Log &amp; Timeline) |      | (Formal Report)   |
++------------------+      +--------------------+      +------------------+      +-------------------+
+</code></pre>
+<h3>2.2 Integritas Bukti dan Chain of Custody</h3>
+<p><em>Chain of Custody</em> merupakan dokumentasi kronologis yang mencatat perolehan, pengendalian, pemindahan, analisis, dan penyimpanan bukti digital. Integritas berkas dibuktikan dengan menghasilkan intisari pesan (<em>message digest</em>) melalui fungsi hash kriptografis:
+- <strong>MD5 (128-bit):</strong> Algoritma ringkasan pesan cepat untuk verifikasi awal.
+- <strong>SHA-1 (160-bit):</strong> Standar kriptografi pelengkap integritas.
+- <strong>SHA-256 (256-bit):</strong> Standar hashing modern yang memiliki ketahanan benturan (<em>collision resistance</em>) sangat tinggi, wajib disertakan dalam standar forensik internasional.</p>
+<h3>2.3 Vektor Serangan Siber Terkait</h3>
+<ol>
+<li><strong>Directory Traversal (Path Traversal):</strong> Kerentanan aplikasi web yang memungkinkan penyerang membaca berkas di luar direktori <em>web root</em> dengan menyuntikkan karakter sekuens khusus seperti <code>../</code> atau representasi URL-encoded <code>%2e%2e%2f</code>. Tujuannya adalah memperoleh kredensial basis data atau berkas konfigurasi sistem (<code>/etc/passwd</code>, <code>.env</code>).</li>
+<li><strong>Follina Exploit (CVE-2022-30190):</strong> Kerentanan zero-day pada Microsoft Windows Support Diagnostic Tool (MSDT) yang dipicu saat membuka atau melihat pratinjau dokumen Microsoft Office (.docx/.rtf). Kerentanan ini memungkinkan penyerang mengeksekusi kode PowerShell jarak jauh (<em>Remote Code Execution</em>) dengan hak akses pengguna lokal tanpa perlu macro aktif.</li>
+<li><strong>Ransomware dan Trojan Backdoor:</strong> Perangkat lunak berbahaya yang mengenkripsi berkas korban menggunakan enkripsi asimetris/simetris dan menuntut uang tebusan (<em>ransom</em>). Trojan backdoor dipasang untuk mempertahankan akses persisten (<em>persistence</em>) ke dalam sistem internal korban.</li>
+</ol>
+<hr />
+<h2>BAB III: METODOLOGI PENELITIAN</h2>
+<h3>3.1 Kerangka Kerja Eksperimen</h3>
+<p>Penelitian ini mengadopsi alur eksperimen empiris berbasis NIST SP 800-86 dengan tahapan kerja operasional sebagai berikut:</p>
+<pre><code>[Mulai]
+   │
+   ▼
+[1. Fase Collection]
+   ├─ Pindaian rekursif direktori bukti (bukti/)
+   ├─ Ekstraksi metadata berkas (nama, ukuran, st_mtime)
+   ├─ Komputasi hash MD5, SHA-1, SHA-256
+   ├─ Pencocokan otomatis terhadap basis data IOC (ioc.txt)
+   └─ Ekspor manifest Chain of Custody (manifest.json)
+   │
+   ▼
+[2. Fase Examination]
+   ├─ Pemuatan manifest.json
+   ├─ Komputasi ulang hash berkas fisik saat ini
+   ├─ Komparasi hash (Deteksi status: COCOK, BERUBAH, HILANG, BARU)
+   └─ Validasi tamper resistance
+   │
+   ▼
+[3. Fase Analysis]
+   ├─ Parsing log web server HTTP (bukti/access.log)
+   ├─ Regex matching pola traversal (../, %2e%2e, %252e%252e)
+   ├─ Deteksi akses berkas sensitif (/etc/passwd, autoload.php, .env)
+   ├─ Evaluasi HTTP status code (200 OK vs 403/404)
+   ├─ Ingest data peristiwa insiden (events.csv)
+   └─ Normalisasi zona waktu (UTC/WIB) &amp; agregasi linimasa terpadu
+   │
+   ▼
+[4. Fase Reporting]
+   ├─ Kompilasi seluruh matriks temuan
+   ├─ Sintesis dampak dan atribusi aktor (BlackPython Team)
+   └─ Penyusunan laporan resmi (laporan.md)
+   │
+   ▼
+[Selesai]
+</code></pre>
+<h3>3.2 Lingkungan dan Alat Pengujian</h3>
+<p>Pengujian dilakukan pada lingkungan terkontrol dengan spesifikasi sebagai berikut:
+- <strong>Sistem Operasi Analis:</strong> Microsoft Windows 11 Pro 64-bit
+- <strong>Lingkungan Eksekusi:</strong> Python 3.13.1 (Standard Library: <code>hashlib</code>, <code>pathlib</code>, <code>re</code>, <code>csv</code>, <code>datetime</code>, <code>argparse</code>, <code>json</code>)
+- <strong>Toolkit Utama:</strong> <code>forensik_nist.py</code>
+- <strong>Data Uji:</strong> Paket simulasi kasus PT. Satseet International (<code>bukti/access.log</code>, <code>catatan_akuisisi.txt</code>, <code>lampiran_simulasi.txt</code>, <code>events.csv</code>, <code>ioc.txt</code>)
+- <strong>Komparator Teoritis:</strong> Wireshark v4.4.2, FTK Imager v4.7.1.2, Autopsy v4.21.0, dan VirusTotal Intelligence</p>
+<hr />
+<h2>BAB IV: HASIL DAN PEMBAHASAN</h2>
+<h3>4.1 Tahap 1: Collection (Akuisisi Bukti dan Hashing)</h3>
+<p>Proses pengumpulan bukti dijalankan terhadap direktori <code>bukti/</code> dengan parameter kasus <code>SIM-01</code> dan pencocokan terhadap <code>ioc.txt</code>. Pembangkitan tanda tangan digital menghasilkan berkas <code>manifest.json</code>.</p>
+<p><strong>Tabel 4.1. Manifest Inventaris Bukti Digital dan Hasil Hashing</strong>
+| Nama Berkas Bukti | Ukuran (Bytes) | Hash MD5 | Hash SHA-1 | Hash SHA-256 | Kecocokan IOC |
+| :--- | :---: | :--- | :--- | :--- | :---: |
+| <code>access.log</code> | 10.805 | <code>0a2e379b32e185873ec8b408892f39c0</code> | <code>82cf214b62db4df43b7e73507119ff391f1a5f6e</code> | <code>6c1445ee259c792cfc261dedfd7f7d99e001dd05b0c7839b6bae1288371f58bf</code> | - |
+| <code>catatan_akuisisi.txt</code> | 169 | <code>4c7bf69bf17b70743b2f293b722d3b7e</code> | <code>bcebb5523a789a3f2dbd1112d308078e878347f7</code> | <code>42d326d9684b2143fed0d3a67bb736a325140dab099b6aa9bdf591a49a893561</code> | - |
+| <code>lampiran_simulasi.txt</code>| 162 | <code>a5f22f6d0f666f7f63f58a361a9bc348</code> | <code>4f3876d540268dfc949fef56f2d93e8784d00810</code> | <code>8b14132601aa8764960ea80eb246e7387c1adbf1e42f026c870e19fda39d3d04</code> | <strong>COCOK (MATCH)</strong> |</p>
+<p><strong>Temuan Kunci:</strong>
+Berkas <code>lampiran_simulasi.txt</code> memiliki nilai hash SHA-256 yang identik dengan entri dalam <code>ioc.txt</code>. Hal ini membuktikan secara ilmiah bahwa berkas lampiran yang diunduh korban pada skenario insiden merupakan sampel dokumen berbahaya (<em>malicious document</em>) Follina yang disebarkan penyerang.</p>
+<hr />
+<h3>4.2 Tahap 2: Examination (Verifikasi Integritas Data)</h3>
+<p>Pada tahap pemeriksaan, dilakukan verifikasi integritas dengan membandingkan kondisi riil seluruh berkas di media penyimpanan terhadap tanda tangan digital yang tercatat di dalam <code>manifest.json</code>.</p>
+<p><strong>Tabel 4.2. Hasil Uji Verifikasi Integritas Bukti</strong>
+| Nama Berkas | Status Integritas | Keterangan Hash | Validasi Keabsahan |
+| :--- | :---: | :---: | :---: |
+| <code>access.log</code> | <strong>COCOK</strong> | Tidak ada perbedaan hash | Sah / Valid |
+| <code>catatan_akuisisi.txt</code> | <strong>COCOK</strong> | Tidak ada perbedaan hash | Sah / Valid |
+| <code>lampiran_simulasi.txt</code> | <strong>COCOK</strong> | Tidak ada perbedaan hash | Sah / Valid |</p>
+<p><strong>Analisis Verifikasi:</strong><br />
+Semua berkas bukti berstatus <code>COCOK</code>. Tidak ada indikasi modifikasi, penambahan, maupun penghapusan data pascaakuisisi. Bukti dinyatakan memenuhi prinsip <em>admissibility</em> dalam standar hukum forensik. Pengujian <em>tamper resistance</em> yang dilakukan dengan memanipulasi 1 bita isi berkas langsung memicu status <code>BERUBAH</code>, membuktikan keandalan sistem deteksi.</p>
+<hr />
+<h3>4.3 Tahap 3: Analysis (Analisis Log Web dan Deteksi Anomali)</h3>
+<p>Pemeriksaan terhadap berkas <code>access.log</code> (total 113 baris transaksi HTTP) berhasil mendeteksi aktivitas pemindaian dan eksploitasi oleh alamat IP eksternal <code>192.168.1.11</code>.</p>
+<p><strong>Tabel 4.3. Rincian Rekaman Serangan Directory Traversal pada Web Server</strong>
+| Timestamp (WIB) | Alamat IP Penyerang | Metode | Jalur Target (<em>Requested URI</em>) | Status HTTP | Evaluasi Forensik |
+| :---: | :---: | :---: | :--- | :---: | :--- |
+| <code>05/Nov/2024 19:58:02</code> | <code>192.168.1.11</code> | GET | <code>/web/index.php/../../../etc/passwd</code> | 404 | Pola traversal teks polos; target file kredensial sistem Linux. |
+| <code>05/Nov/2024 19:58:05</code> | <code>192.168.1.11</code> | GET | <code>/web/index.php/..%2f..%2f..%2fetc/passwd</code> | 403 | Pola traversal dengan enkoding URL (<code>%2f</code> = <code>/</code>); diblokir server. |
+| <code>05/Nov/2024 19:58:09</code> | <code>192.168.1.11</code> | GET | <code>/web/%2e%2e/%2e%2e/config/database.yml</code> | 404 | Enkoding titik ganda (<code>%2e%2e</code>); mencari konfigurasi basis data. |
+| <code>05/Nov/2024 19:58:14</code> | <code>192.168.1.11</code> | GET | <code>/web/..%2f..%2fsrc/vendor/autoload.php</code> | <strong>200</strong> | <strong>BERHASIL:</strong> File loader komponen aplikasi web berhasil diakses. |
+| <code>05/Nov/2024 19:58:20</code> | <code>192.168.1.11</code> | GET | <code>/web/..%2f..%2fsrc/config/.env</code> | <strong>200</strong> | <strong>KRITIS / BERHASIL:</strong> Berkas <code>.env</code> (berisi password, API key, konfigurasi internal) bocor. |</p>
+<p><strong>Evaluasi Teknis:</strong><br />
+Pelaku melakukan teknik <em>fuzzing/scanning</em> dengan variasi URL encoding untuk mengelabui filter <em>Web Application Firewall</em> (WAF). Keberhasilan respons status <code>200 OK</code> pada permintaan berkas <code>.env</code> menjadi titik balik kritis insiden, di mana penyerang berhasil memperoleh kredensial administratif internal yang kemudian dipakai untuk menembus portal HRMS pada tahap serangan berikutnya.</p>
+<hr />
+<h3>4.4 Rekonstruksi Linimasa Serangan Terpadu (<em>Integrated Timeline Analysis</em>)</h3>
+<p>Dengan menggabungkan artefak log akses web, data rekayasa sosial, dan rekaman peristiwa endpoint (<code>events.csv</code>), berhasil disusun linimasa komprehensif dari awal hingga akhir insiden.</p>
+<p><strong>Tabel 4.4. Linimasa Komprehensif Serangan Multi-Vektor</strong>
+| Tanggal &amp; Waktu (WIB) | Sumber Artefak | Entitas / Akun | Deskripsi Peristiwa Serangan | Fase Serangan |
+| :---: | :---: | :---: | :--- | :--- |
+| <code>05/Nov/2024 19:58:02</code> | <code>access.log</code> | <code>192.168.1.11</code> | Percobaan Directory Traversal ke <code>/etc/passwd</code> (HTTP 404) | <em>Reconnaissance</em> |
+| <code>05/Nov/2024 19:58:05</code> | <code>access.log</code> | <code>192.168.1.11</code> | Percobaan Directory Traversal dengan URL encoding (HTTP 403) | <em>Evasion Attempt</em> |
+| <code>05/Nov/2024 19:58:14</code> | <code>access.log</code> | <code>192.168.1.11</code> | Akses ke <code>autoload.php</code> berhasil (HTTP 200) | <em>Information Gathering</em> |
+| <code>05/Nov/2024 19:58:20</code> | <code>access.log</code> | <code>192.168.1.11</code> | Akses ke konfigurasi rahasia <code>.env</code> berhasil (HTTP 200) | <em>Credential Leakage</em> |
+| <code>06/Nov/2024 17:54:00</code> | Email Gateway | Local User 2 | Menerima email pertanyaan lowongan kerja dari "Maya Putri" | <em>Reconnaissance Social</em> |
+| <code>19/Nov/2024 22:18:00</code> | Email Gateway | Local User 1 ("Ahmad Habibie") | Email phishing lanjutan masuk membawa tautan/lampiran lamaran kerja | <em>Initial Access Weaponization</em> |
+| <code>20/Nov/2024 13:23:00</code> | Web Log | <code>192.168.1.11</code> | Pelaku mencoba mengakses antarmuka portal login HRMS | <em>Initial Connection</em> |
+| <code>20/Nov/2024 13:29:00</code> | Web Log | <code>192.168.1.11</code> | Pelaku berhasil login ke portal HRMS menggunakan kredensial bocor | <em>Privilege Access</em> |
+| <code>20/Nov/2024 13:29:00</code> | Email Client | Local User 1 | Lampiran lamaran kerja <code>Folline.zip</code> diunduh oleh korban | <em>Delivery / User Execution</em> |
+| <code>20/Nov/2024 13:33:00</code> | Disk / Endpoint | Local User 1 | Dokumen kurikulum vitae dibuka, memicu eksploitasi CVE-2022-30190 | <em>Remote Code Execution</em> |
+| <code>20/Nov/2024 13:49:00</code> | Disk / Endpoint | Local User 1 | Eksekusi otomatis <code>update.exe</code> (Trojan Backdoor aktif) | <em>Persistence / C2</em> |
+| <code>20/Nov/2024 13:50:00</code> | Disk / Endpoint | Local User 1 | Eksekusi <code>ransom.exe</code> (<code>main_v2.exe</code> / <em>Python.Filecoder</em>) | <em>Malware Execution</em> |
+| <code>20/Nov/2024 13:59:00</code> | Disk / Storage | Sistem HRMS | Berkas-berkas penting terenkripsi dan ekstensi berganti <code>.wasted</code> | <em>Impact (Ransomware)</em> |
+| <code>22/Nov/2024 09:00:00</code> | OSINT / Telegram | BlackPython Team | Publikasi klaim pencurian data karyawan dan tuntutan pemerasan | <em>Exfiltration &amp; Extortion</em> |</p>
+<hr />
+<h3>4.5 Analisis Atribusi dan Karakteristik Malware</h3>
+<ol>
+<li><strong>Atribusi Aktor Ancaman:</strong><br />
+   Klaim publik pada saluran Telegram tanggal 22 November 2024 mengonfirmasi keterlibatan sindikat <strong>BlackPython Team</strong>. Pola serangan mencerminkan model <em>double extortion</em> (pemerasan ganda), di mana data sensitif pegawai diunduh terlebih dahulu sebelum sistem dienkripsi secara total.</li>
+<li><strong>Karakteristik Trojan Backdoor (<code>update.exe</code>):</strong><br />
+   Berdasarkan intelijen VirusTotal dan telemetri endpoint, berkas ini dikenali sebagai keluarga <em>Trojan.Win32/Shell.R128S</em> dan <em>Backdoor.Win/shellcode.apid</em>. Berkas ini berfungsi menjaga koneksi balik (<em>reverse shell</em>) guna memfasilitasi injeksi muatan sekunder.</li>
+<li><strong>Karakteristik Ransomware (<code>ransom.exe</code>):</strong><br />
+   Malware ini merupakan varian <em>Python.Filecoder</em> yang memanfaatkan algoritma kriptografi hibrida untuk mengunci struktur file korporat tanpa kemungkinan dekripsi tanpa kunci privat penyerang.</li>
+</ol>
+<hr />
+<h2>BAB V: REKOMENDASI DAN STRATEGI MITIGASI</h2>
+<p>Berdasarkan temuan forensik, dirumuskan strategi pertahanan mendalam (<em>defense-in-depth</em>) mencakup aspek teknis, prosedural, dan sumber daya manusia:</p>
+<h3>5.1 Pengamanan Aplikasi Web dan Server</h3>
+<ol>
+<li><strong>Validasi dan Sanitasi Input Ketat:</strong> Menerapkan pembatasan jalur kanonikal (<em>canonical path checking</em>) pada kode PHP untuk menolak semua string yang mengandung <code>../</code>, <code>%2e</code>, atau karakter kontrol traversal lainnya.</li>
+<li><strong>Pemisahan Direktori Sensitif:</strong> Memindahkan berkas konfigurasi kritis (<code>.env</code>, konfigurasi database, pustaka vendor) ke luar direktori publik (<em>document root</em> web server), serta menonaktifkan <em>directory indexing</em>.</li>
+<li><strong>Penerapan Web Application Firewall (WAF):</strong> Mengaktifkan modul filter inspeksi paket HTTP real-time untuk secara otomatis memblokir IP yang melakukan percobaan serangan berbasis pola tanda tangan serangan.</li>
+</ol>
+<h3>5.2 Pengamanan Endpoint dan Penambalan Kerentanan</h3>
+<ol>
+<li><strong>Penambalan Segera CVE-2022-30190:</strong> Memastikan pembaruan keamanan sistem operasi Windows dan Microsoft Office terpasang, atau menonaktifkan protokol MSDT (<em>troubleshooter URL handler</em>) melalui registri Windows jika pembaruan belum dapat diterapkan.</li>
+<li><strong>Implementasi EDR (<em>Endpoint Detection and Response</em>):</strong> Memasang agen EDR dengan heuristik perilaku untuk mendeteksi perilaku mencurigakan seperti aplikasi Office (<code>winword.exe</code>) yang memanggil <code>powershell.exe</code> atau <code>msdt.exe</code>.</li>
+<li><strong>Kebijakan Pengeksekusian Perangkat Lunak:</strong> Membatasi eksekusi berkas binari di folder temporer (<code>%TEMP%</code>, <code>%APPDATA%</code>, <code>Downloads</code>) menggunakan fitur <em>AppLocker</em> atau <em>Software Restriction Policies</em>.</li>
+</ol>
+<h3>5.3 Strategi Manajemen Cadangan (<em>Backup Resilience</em>)</h3>
+<ol>
+<li><strong>Arsitektur Backup 3-2-1:</strong> Menyimpan setidaknya 3 salinan data, pada 2 media penyimpanan yang berbeda, dengan 1 salinan tersimpan secara <em>offline / immutable</em> (air-gapped) agar tidak dapat dienkripsi oleh ransomware yang menyebar di jaringan internal.</li>
+<li><strong>Pengujian Pemulihan Berkala:</strong> Melakukan simulasi <em>disaster recovery</em> terjadwal untuk mengukur <em>Recovery Time Objective</em> (RTO) dan <em>Recovery Point Objective</em> (RPO).</li>
+</ol>
+<h3>5.4 Peningkatan Kesadaran Keamanan Karyawan</h3>
+<ol>
+<li><strong>Pelatihan Anti-Phishing:</strong> Mengadakan simulasi <em>spear-phishing</em> berkala untuk melatih kewaspadaan pegawai HRD terhadap berkas lamaran berformat arsip (.zip, .rar) atau dokumen pembawa muatan makro berbahaya.</li>
+<li><strong>Penerapan Autentikasi Multi-Faktor (MFA):</strong> Wajib menerapkan MFA pada seluruh akses portal administrasi web server dan akun email korporat guna memitigasi penyalahgunaan kredensial hasil peretasan.</li>
+</ol>
+<hr />
+<h2>BAB VI: KESIMPULAN DAN SARAN</h2>
+<h3>6.1 Kesimpulan</h3>
+<ol>
+<li>Penerapan standar <strong>NIST SP 800-86</strong> secara efektif mampu mengurai serangan siber multi-vektor pada PT. Satseet International ke dalam tahapan yang sistematis dan terukur.</li>
+<li>Keabsahan bukti digital terjamin secara penuh melalui proses hashing kriptografis ganda (MD5, SHA-1, SHA-256) pada fase <em>Collection</em> dan <em>Examination</em> dengan status verifikasi <code>COCOK</code> tanpa adanya indikasi pemalsuan bukti.</li>
+<li>Analisis log web mengungkap bahwa serangan diawali oleh eksploitasi <em>Directory Traversal</em> oleh IP <code>192.168.1.11</code> yang membocorkan berkas konfigurasi internal (<code>.env</code>), diikuti kampanye <em>spear-phishing</em> bertarget yang mengeksploitasi kerentanan <em>Follina RCE</em> (CVE-2022-30190), dan diakhiri dengan serangan <em>ransomware</em> serta pemerasan oleh kelompok <em>BlackPython Team</em>.</li>
+<li>Keberhasilan investigasi ini membuktikan bahwa otomasi skrip forensik berbasis Python dapat diandalkan untuk melakukan triase cepat (<em>rapid triage</em>) dan merekonstruksi linimasa kejahatan siber secara akurat.</li>
+</ol>
+<h3>6.2 Saran</h3>
+<ol>
+<li>Untuk penelitian selanjutnya, disarankan memperluas cakupan akuisisi ke artefak memori volatil (RAM) menggunakan perkakas seperti <em>Volatility 3</em> untuk mendeteksi sisa injeksi kode <em>in-memory</em> yang tidak tersimpan di dalam disk.</li>
+<li>Disarankan mengintegrasikan format ekspor linimasa ke dalam standar visualisasi investigasi tingkat lanjut (seperti format <em>Plaso / log2timeline</em> atau <em>Timesketch</em>) guna mempermudah kolaborasi antar-analis forensik.</li>
+</ol>
+<hr />
+<h2>DAFTAR PUSTAKA</h2>
+<ol>
+<li>Ihsan, M. R. I., &amp; Voutama, A. (2025). Penerapan Metode NIST Dalam Analisis Forensik Digital Pasca Serangan Siber (Studi Kasus: PT. Analis Digital Forensik). <em>CyberSecurity dan Forensik Digital</em>, 8(1), 53–62.</li>
+<li>Kent, K., Chevalier, S., Grance, T., &amp; Dang, H. (2006). <em>Guide to Integrating Forensic Techniques into Incident Response</em> (NIST Special Publication 800-86). National Institute of Standards and Technology, U.S. Department of Commerce.</li>
+<li>International Organization for Standardization. (2012). <em>Information technology — Security techniques — Guidelines for identification, collection, acquisition and preservation of digital evidence</em> (ISO/IEC Standard No. 27037:2012).</li>
+<li>Faizal, A., &amp; Luthfi, A. (2024). Comparison Study of NIST SP 800-86 and ISO/IEC 27037 Standards as A Framework for Digital Forensic Evidence Analysis. <em>Journal of Information Systems and Informatics</em>, 6(2), 701–718.</li>
+<li>National Vulnerability Database (NVD). (2022). <em>CVE-2022-30190: Microsoft Windows Support Diagnostic Tool (MSDT) Remote Code Execution Vulnerability</em>. NIST.</li>
+<li>Ramadhan, R. A., Rachmat Setiawan, P., &amp; Hariyadi, D. (2022). Digital Forensic Investigation for Non-Volatile Memory Architecture by Hybrid Evaluation Based on ISO/IEC 27037:2012 and NIST SP800-86 Framework. <em>IT Journal Research and Development</em>, 7(2), 162–168.</li>
+<li>Carrier, B. (2005). <em>File System Forensic Analysis</em>. Addison-Wesley Professional.</li>
+<li>Casey, E. (2011). <em>Digital Evidence and Computer Crime: Forensic Science, Computers, and the Internet</em> (3rd ed.). Academic Press.</li>
+</ol>
+</div>
+</body>
+</html>
